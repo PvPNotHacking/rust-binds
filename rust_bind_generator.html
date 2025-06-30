@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rust Bind Generator</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; background: #f0f0f0; }
+    .container { background: white; padding: 2rem; border-radius: 1rem; max-width: 600px; margin: auto; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+    input, select, button { width: 100%; padding: 0.5rem; margin: 0.5rem 0; }
+    pre { background: #eee; padding: 1rem; border-radius: 0.5rem; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Rust Bind Generator</h1>
+    <label for="key">Choose Key:</label>
+    <input type="text" id="key" placeholder="e.g. mouse1, f1, 1, etc." />
+
+    <label for="action">Choose Action:</label>
+    <input type="text" id="action" placeholder="e.g. +attack, +jump, +duck, etc." />
+
+    <button onclick="generateBind()">Generate Bind</button>
+    <button onclick="copyBind()">Copy to Clipboard</button>
+    <button onclick="downloadCfg()">Download .cfg</button>
+
+    <h3>Generated Bind:</h3>
+    <pre id="output"></pre>
+  </div>
+
+  <script>
+    function generateBind() {
+      const key = document.getElementById('key').value.trim();
+      const action = document.getElementById('action').value.trim();
+      const bind = `bind ${key} \"${action}\"`;
+      document.getElementById('output').textContent = bind;
+    }
+
+    function copyBind() {
+      const output = document.getElementById('output').textContent;
+      navigator.clipboard.writeText(output).then(() => alert("Copied!"));
+    }
+
+    function downloadCfg() {
+      const content = document.getElementById('output').textContent + "\n";
+      const blob = new Blob([content], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'autoexec.cfg';
+      a.click();
+    }
+  </script>
+</body>
+</html>
